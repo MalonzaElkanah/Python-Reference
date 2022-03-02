@@ -1,5 +1,7 @@
 '''
-A Data structure is a particular way of organizing data in a computer so that it can be used effectively. It is a specialized format for organizing, processing, retrieving and storing data. Algorithm on the hand is a set of well-defined instructions in calculation or to solve a particular problem.
+A Data structure is a particular way of organizing data in a computer so that it can be used effectively. 
+It is a specialized format for organizing, processing, retrieving and storing data. 
+Algorithm on the hand is a set of well-defined instructions in calculation or to solve a particular problem.
 
 Common Data Structures in computer programming in general are:
 
