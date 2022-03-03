@@ -391,122 +391,187 @@ r1.perimeter()
 r1.area()
 
 
-### 1.8 Debugging, Handling the error and exceptions - try..except..else..finally
+### 1.8 Handling the error and exceptions - try..except..else..finally
+Getting an error, or exception, in your Python program means the entire program will crash. You don’t want this to happen in real-world programs. Example:
+dummy_file = open('random_file.csv')
+# FileNotFoundError: [Errno 2] No such file or directory: 'random_file.csv'
+
+Above program creates a FileNotFoundError and stops executing. We want the program to detect errors, handle them, and then continue to run. Thats where try...except...else...finally... Statements comes in.
+
+try:
+    # Open file and shows its name.
+    dummy_file = open('random_file.csv')
+    print(dummy_file.name)
+except Exception:
+    print("Sorry, File named random_file.csv Does not Exist.")
+
+*Being Specific about Exceptions*
+if any exception is raised in this try block, it will execute the code in except block. Sometimes we need to catch a specific error. For Instance, FileNotFoundError in above code. You add the exception name after the except statement.
+
+try:
+    # Open file and shows its name.
+    dummy_file = open('random_file.csv')
+    print(dummy_file.name)
+except FileNotFoundError:
+    print("Sorry, File named random_file.csv Does not Exist.")
+
+*One Try statement can be followed by multiple except statement.*
+try:
+    ...
+except FileNotFoundError:
+    print("Sorry, File named random_file.csv Does not Exist.")
+except Exception as e:
+    print(e)
+
+*else block*  
+Code in this block will be executed if no exceptions raised 
+try:
+    ...
+except FileNotFoundError:
+    print("Sorry, File named random_file.csv Does not Exist.")
+except Exception as e:
+    print(e) 
+else:
+    # Continue on here only if no exceptions raised
+
+*finally block*
+if included, the code in this block will run whether an exception occurs or not.
+try:
+    try to do this
+except:
+    if x happens, stop here
+except Exception as e:
+    if something else bad happens, stop here
+else:
+    if no exceptions, continue on normally here
+finally:
+    do this code no matter what happened above
 
 
 ### 1.9 importing libraries
+Python comes with a set of modules called the standard library - which a Python program that contains a related group of functions that can be embedded in your programs. Before you can use the functions in a module, you must import the module with an import statement.
+Example: the random module has random number–related functions,
+
 import random
-import os, sys, math
 
 for i in range(15):
     print(random.randint(1, 10))
 
-while True:
-    print('Type exit to exit.')
-    response = input()
-    if response == 'exit':
-        sys.exit()
-    print('You typed ' + response + '.')
-
-
+Example: the math module has mathematics related functions
+import math
+print(math.sqrt(81))
 
 ### 1.10 String In-depth
-# s[i:j:k] A slice of s from i to j with step k .
-# min(s) The smallest (lowest) item of string s .  uses Ascii - space smaller than a-z,A-Z
-# max(s) The largest (highest) item of string s .
-# s.index(x[, i[, j]]) The numeric position of the first occurrence of x in string s . The optional i and
-# j let you limit the search to the characters from i to j .
-# s.count(x) The total number of times string x appears in larger string s .
-
-# s.capitalize() Returns a string with the first letter capitalized, the rest lowercase.
-# s.count(x,[y.z]) Returns the number of times string x appears in string s . Optionally you can add y as
-# a starting point and z as an ending point to search only a portion of the string.
-# s.find(x,[y.z]) Returns a number indicating the first position at which string x can be found in string
-# s . Optional y and z parameters allow you to limit the search to a portion of the
-# string. Returns –1 if none found.
-# s.index(x,[y.z]) Similar to find but returns a “substring not found” error if string x can’t be found
-# in string y .
-# s.isalpha() Returns True if s is at least one character long and contains only letters (A-Z or a-z).
-# s.isdecimal() Returns True if s is at least one character long and contains only numeric
-# characters (0-9).
-# s.islower() Returns True if s contains letters and all those letters are lowercase.
-# s.isnumeric() Returns True if s is at least one character long and contains only numeric
-# characters (0-9).
-# s.isprintable() Returns True if string s contains only printable characters.
-# s.istitle() Returns True if string s contains letters and the first letter of each word is uppercase
-# followed by lowercase letters.
-# s.isupper() Returns True if all letters in the string are uppercase.
-# s.lower() Returns s with all letters converted to lowercase.
-# s.lstrip() Returns s with any leading spaces removed.
-# s.replace(x,y) Returns a copy of string s with all characters x replaced by character y .
-# s.rfind(x,[y,z]) Similar to find but searches backwards from the start of the string. If y and z are
-# provided, searches backwards from position z to position y . Returns –1 if string x
-# not found.
-# s.rindex() Same as . rfind but returns an error if the substring isn’t found.
-# s.rstrip() Returns string x with any trailing spaces removed.
-# s.strip() Returns string x with leading and trailing spaces removed.
-# s.swapcase() Returns string s with uppercase letters converted to lowercase and lowercase letters
-# converted to uppercase.
-# s.title() Returns string s with the first letter of every word capitalized and all other letters
-# lowercase.
-# s.upper() Returns string s with all letters converted to uppercase.
+In data types you learnt about string data type. In python, You can do more with strings other than write, print, and access strings. You can extract partial strings from string values, add or remove spacing, convert letters to lowercase or uppercase, check that strings are formatted correctly, etc. This is easily done by use of different string method, indexes and slices and other in-built functions. Example:
+'capitalize', 'casefold', 'center', 'count', 'encode', 'endswith', 'expandtabs', 'find', 'format', 'format_map', 'index', 'isalnum', 'isalpha', 'isdecimal', 'isdigit', 'isidentifier', 'islower', 'isnumeric', 'isprintable', 'isspace', 'istitle', 'isupper', 'join', 'ljust', 'lower', 'lstrip', 'maketrans', 'partition', 'replace', 'rfind', 'rindex', 'rjust', 'rpartition', 'rsplit', 'rstrip', 'split', 'splitlines', 'startswith', 'strip', 'swapcase', 'title', 'translate', 'upper', 'zfill'
 
 
+* s[i:j:k] A slice of s from i to j with step k .
+* min(s) The smallest (lowest) item of string s .  uses Ascii - space smaller than a-z,A-Z
+* max(s) The largest (highest) item of string s .
+* s.index(x[, i[, j]]) The numeric position of the first occurrence of x in string s . The optional i and
+  j let you limit the search to the characters from i to j .
+*  s.count(x) The total number of times string x appears in larger string s .
 
-
+* s.capitalize() Returns a string with the first letter capitalized, the rest lowercase.
+* s.count(x,[y.z]) Returns the number of times string x appears in string s . Optionally you can add y as
+  a starting point and z as an ending point to search only a portion of the string.
+* s.find(x,[y.z]) Returns a number indicating the first position at which string x can be found in string s . Optional y and z parameters allow you to limit the search to a portion of the string. Returns –1 if none found.
+* s.index(x,[y.z]) Similar to find but returns a “substring not found” error if string x can’t be found in string y .
+* s.isalpha() Returns True if s is at least one character long and contains only letters (A-Z or a-z).
+* s.isdecimal() Returns True if s is at least one character long and contains only numeric characters (0-9).
+* s.islower() Returns True if s contains letters and all those letters are lowercase.
+* s.isnumeric() Returns True if s is at least one character long and contains only numeric characters (0-9).
+* s.isprintable() Returns True if string s contains only printable characters.
+* s.istitle() Returns True if string s contains letters and the first letter of each word is uppercase followed by lowercase letters.
+* s.isupper() Returns True if all letters in the string are uppercase.
+* s.lower() Returns s with all letters converted to lowercase.
+* s.lstrip() Returns s with any leading spaces removed.
+* s.replace(x,y) Returns a copy of string s with all characters x replaced by character y .
+* s.rfind(x,[y,z]) Similar to find but searches backwards from the start of the string. If y and z are provided, searches backwards from position z to position y . Returns –1 if string x not found.
+* s.rindex() Same as . rfind but returns an error if the substring isn’t found.
+* s.rstrip() Returns string x with any trailing spaces removed.
+* s.strip() Returns string x with leading and trailing spaces removed.
+* s.swapcase() Returns string s with uppercase letters converted to lowercase and lowercase letters converted to uppercase.
+* s.title() Returns string s with the first letter of every word capitalized and all other letters lowercase.
+* s.upper() Returns string s with all letters converted to uppercase.
 
 
 ### 1.11 Number in-depth
-# abs(x) Returns the absolute value of number x (converts negative numbers to positive)
-# bin(x) Returns a string representing the value of x converted to binary.
-# float(x) Converts a string or number x to a the float data type
-# format(x,y) Returns x formatted as directed by format string y.
-# hex(x) Returns a string containing x converted to hexadecimal, prefixed with 0x.
-# int(x) Converts x to the integer data type by truncating (not rounding) the decimal point and any digits after it.
-# max(x,y,z ...) Takes any number of numeric arguments and returns whichever one is the largest.
-# min(x,y,z ...) Takes any number of numeric arguments and returns whichever one is the smallest.
-# oct(x) Converts x to an octal number, prefixed with 0o to indicate octal.
-# round(x,y) Rounds the number x to y number of decimal places.
-# type(x) Returns a string indicating the data type of x.
+You can also do more with int and float Data types other than declaring them and doing arthmetic operation on them. Below are in-built fuction that can manupulate Numbers in python.
+* abs(x) Returns the absolute value of number x (converts negative numbers to positive)
+* bin(x) Returns a string representing the value of x converted to binary.
+* float(x) Converts a string or number x to a the float data type
+* format(x,y) Returns x formatted as directed by format string y.
+* hex(x) Returns a string containing x converted to hexadecimal, prefixed with 0x.
+* int(x) Converts x to the integer data type by truncating (not rounding) the decimal point and any digits after it.
+* max(x,y,z ...) Takes any number of numeric arguments and returns whichever one is the largest.
+* min(x,y,z ...) Takes any number of numeric arguments and returns whichever one is the smallest.
+* oct(x) Converts x to an octal number, prefixed with 0o to indicate octal.
+* round(x,y) Rounds the number x to y number of decimal places.
+* type(x) Returns a string indicating the data type of x.
 
+If you want to do complex math operation on numbers like trigonomry, hyperbolic, powers and logarithms, angular conversions, constants like pi and e, import the math module. Example:
 
-# import Math
-# math.sqrt(x)      -
-# math.acos(x) Returns the arc cosine of x in radians.
-# math.atan(x) Returns the arc tangent of x, in radians.
-# math.atan2(y, x) Returns atan(y / x), in radians.
-# math.ceil(x) Returns the ceiling of x, the smallest integer greater than or equal to x.
-# math.cos(x) Returns the cosine of x radians.
-# math.degrees(x) Converts angle x from radians to degrees.
-# math.e Returns the mathematical constant e (2.718281 . . .)
-# math.exp(x) Returns e raised to the power x, where e is the base of natural logarithms.
-# math.factorial(x) Returns the factorial of x.
-# math.floor() Returns the floor of x, the largest integer less than or equal to x.
-# math.isnan(x) Returns True if x is not a number, otherwise returns False.
-# math.log(x,y) Returns the natural logarithm of x to base y.
-# math.log2(x) Returns the base-2 logarithm of x.
-# math.pi Returns the mathematical constant pi (3.141592 . . .).
-# math.pow(x, y) Returns x raised to the power y.
-# math.radians(x) Converts angle x from degrees to radians.
-# math.sin(x) Returns the arc sine of x, in radians.
-# math.sqrt(x) Takes any number of numeric arguments and returns whichever one is the smallest.
-# math.tan(x) Returns the tangent of x radians.
-# math.tau() Returns the mathematical constant tau (6.283185 . . .).
+import Math
+math.sqrt(x)      -
+math.acos(x) Returns the arc cosine of x in radians.
+math.atan(x) Returns the arc tangent of x, in radians.
+math.atan2(y, x) Returns atan(y / x), in radians.
+math.ceil(x) Returns the ceiling of x, the smallest integer greater than or equal to x.
+math.cos(x) Returns the cosine of x radians.
+math.degrees(x) Converts angle x from radians to degrees.
+math.e Returns the mathematical constant e (2.718281 . . .)
+math.exp(x) Returns e raised to the power x, where e is the base of natural logarithms.
+math.factorial(x) Returns the factorial of x.
+math.floor() Returns the floor of x, the largest integer less than or equal to x.
+math.isnan(x) Returns True if x is not a number, otherwise returns False.
+math.log(x,y) Returns the natural logarithm of x to base y.
+math.log2(x) Returns the base-2 logarithm of x.
+math.pi Returns the mathematical constant pi (3.141592 . . .).
+math.pow(x, y) Returns x raised to the power y.
+math.radians(x) Converts angle x from degrees to radians.
+math.sin(x) Returns the arc sine of x, in radians.
+math.sqrt(x) Takes any number of numeric arguments and returns whichever one is the smallest.
+math.tan(x) Returns the tangent of x radians.
+math.tau() Returns the mathematical constant tau (6.283185 . . .).
 
 
 ### 1.12 Date and time
-# Import the datetime module, nickname dt
+To work with dates and times, you typically need to use the datetime module.
+*Import the datetime module with nickname dt*
 import datetime as dt
-# Store today's date in a variable named today.
-today = dt.date.today()
-# Store some other date in a variable called last_of_teens
-last_of_teens = dt.date(2019, 12, 31)
-print(last_of_teens.month)
-print(last_of_teens.day)
-print(last_of_teens.year)
-# Formatting Strings for Dates and Times
 
-# %a Weekday, abbreviated Sun
+datetime.date : A date consisting of month, day, and year (no time information).
+datetime.time : A time consisting of hour, minute, second, microsecond, and optionally time zone information if needed (but no date).
+datetime.datetime : A single item of data that includes date, time, and optionally time zone information.
+
+Working with Dates
+variable = datetime.date(year, month, day)
+*Store today's date in a variable named today.*
+today = dt.date.today()
+*Store some other date in a variable called birth_date*
+birth_date = dt.date(2019, 12, 31)
+print(birth_date.month)
+print(birth_date.day)
+print(birth_date.year)
+
+Working with times
+If you want to work strictly with time data, use the datetime.time class. The basic syntax for defining a time object using the time class is 
+variable = datetime.time([hour,[minute,[second,[microsecond]]]])
+all the arguments are optional
+midnight = dt.time() # 00:00:00
+just_morning = dt.time(06,09,00)
+
+Working with date and time
+variable = datetime.datetime(year, month, day, hour, [minute, [second, [microsecond]]])
+The month, day, and year are required. The rest are optional and set to zero in the time if you omit them.
+import datetime as dt
+new_years_eve = dt.datetime(2019,12,31,23,59)
+print(new_years_eve)
+
+# Formatting Strings for Dates and Times
+*# %a Weekday, abbreviated Sun
 # %A Weekday, full Sunday
 # %w Weekday number 0-6, where 0 is Sunday 0
 # %d Number day of the month 01-31 31
@@ -530,24 +595,74 @@ print(last_of_teens.year)
 # 23:59:59 2018
 # %x Local version of date 12/31/18
 # %X Local version of time 23:59:59
-# %% A % character %
+# %% A % character %*
 
-print(f"{last_of_teens:%A, %B %d, %Y}")
+print(f"{birth_date:%A, %B %d, %Y}")
 today_s_date = f"{today:%m/%d/%Y}"
 print(today_s_date)
+
+Time Delta
+The timedelta happens automatically when you subtract one date from another to get the time between.
+
 new_years_day = dt.date(2019, 1, 1)
 memorial_day = dt.date(2019, 5, 27)
 days_between = memorial_day - new_years_day
 
+You can also define any timedelta (duration) using this syntax:
+datetime.timedelta(days=, seconds=, microseconds=, milliseconds=, minutes=, hours=, weeks=)
+If you omit an argument, its value is set to zero.
 
-## Intermediate Python 
-* Regular Expressions
-* File Operations
-* Working with web
-*
-* 
-****
-* Making your own module/library
+import datetime as dt
+new_years_day = dt.date(2019,1,1)
+duration = dt.timedelta(days=146)
+print(new_years_day + duration) # 2019-05-27
+
+import datetime as dt
+now = dt.datetime.now()
+birthdatetime = dt.datetime(1995, 3, 31, 8, 26)
+age = now - birthdatetime
+print(age) # 8634 days, 7:55:07.739804
+print(type(age)) # <class 'datetime.timedelta'>
+
+
+## 2. Intermediate Python 
+### 2.1 Regular Expressions (regexes)
+Regular expressions are huge time-savers for programmers. They allow you to specify a pattern of text to search for or filter. 
+All the regex functions in Python are in the re module.
+import re
+
+Passing a string value representing your regular expression to re.compile() returns a Regex pattern object
+A Regex object’s search() method searches the string it is passed for any matches to the regex. The search() method will return None if the regex pattern is not found in the string. If the pattern is found, the search() method returns a Match object. Match objects have a group() method that will return the actual matched text from the searched string.
+
+Example: Matching Kenya Phone Numbers (+254)718306114 | 0718-306-114 | 0722404045
+
+import re
+
+def extract_phone_num(text):
+    kenya_pattern = r"(\(\+\d{3}\)\d{9})|(\d{4}-\d{3}-\d{3})|(\d{10})"
+    matching = re.compile(kenya_pattern)
+    return matching.findall(text)
+
+
+my_text = "(+254)734423363 0714-134-941This is 0756464654 just a text with random 0756464654 Kenyan Phone Numbers " \
+          "(+254)718306114 0718-306-114 blah 0756464654 blah 07013-213-311 0756464654"
+print(extract_phone_num(my_text))
+
+search()  -   Search for the first instance
+findall() -   search for all matching instance
+The sub() -   Substituting Strings
+The sub() method for Regex objects is passed two arguments. The first argument is a string to replace any matches.
+The second is the string for the regular expression. The sub() method returns a string with the substitutions applied.
+
+
+### 2.2 File Operations
+This section involves how to use Python to create, read, and save files on the hard drive. The files can be both text or binary files. It also involves organize preexisting files on the hard drive For Instance: copying, renaming, moving, or compressing them.
+
+
+### 2.3 Working with web
+ 
+
+### 2.4 Making your own module/library
 
 ## Scripts and Automation
 * Web Scrapping - Selium

@@ -1,4 +1,10 @@
 # Files and File Paths
+
+#'abspath', 'altsep', 'basename', 'commonpath', 'commonprefix', 'curdir', 'defpath', 'devnull', 
+['dirname', 'exists', 'expanduser', 'expandvars', 'extsep', 'genericpath', 'getatime', 'getctime', 
+'getmtime', 'getsize', 'isabs', 'isdir', 'isfile', 'islink', 'ismount', 'join', 'lexists', 'normcase', 
+'normpath', 'os', 'pardir', 'pathsep', 'realpath', 'relpath', 'samefile', 'sameopenfile', 'samestat', 
+'sep', 'split', 'splitdrive', 'splitext', 'stat', 'supports_unicode_filenames', 'sys']
 #
 # os.path.join(<folder>, <folder>, ...)    -   return os specific file path
 
@@ -26,6 +32,7 @@
 # open()    -   function to return a File object. default read mode
 # open('<file 2 open>', 'w')    -   open file for writing   'a' - append file
 # read() or write(<text to write/append>)    -    method on the File object.
+# readlines() method to get a list of string values from the file, one string for each line of text.
 # close()   -   Close the file by calling the method on the File object.
 # n
 
@@ -39,7 +46,12 @@
 # cats = ['Zophie', 'Pooka', 'Simon']
 # shelfFile['cats'] = cats
 # shelfFile.close()
-# l
+# 
+
+shelfFile = shelve.open('mydata')
+shelfFile['cats']
+['Zophie', 'Pooka', 'Simon']
+shelfFile.close()
 
 import os
 
