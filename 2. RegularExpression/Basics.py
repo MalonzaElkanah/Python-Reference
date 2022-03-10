@@ -1,3 +1,19 @@
+'''
+                Regular expressions
+'''
+
+# Regular expressions are huge time-savers for programmers. 
+# They allow you to specify a pattern of text to search for or filter. 
+# All the regex functions in Python are in the re module.
+import re
+
+# Passing a string value representing your regular expression to re.compile() returns a Regex pattern object
+# A Regex object’s search() method searches the string it is passed for any matches to the regex. 
+# The search() method will return None if the regex pattern is not found in the string. 
+# If the pattern is found, the search() method returns a Match object. 
+# Match objects have a group() method that will return the actual matched text from the searched string.
+
+
 # \d    -   Any character that is a numeric digit from 0 to 9.
 # \D    -   Any character that is not a numeric digit from 0 to 9.
 # \w    -   Any letter, numeric digit, or the underscore character.

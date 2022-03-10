@@ -1,10 +1,40 @@
-
 # String Basics
+
+# In python, You can do more with strings other than write, print, and access strings. 
+# You can extract partial strings from string values, add or remove spacing, convert letters to lowercase 
+# or uppercase, check that strings are formatted correctly, etc. 
+# This is easily done by use of different string method, indexes and slices and other in-built functions. 
+
+
+'''
+				Working with strings using indexes and slices
+'''
+s = "Hello World, I love Programming with Python."
 # s[i:j:k] A slice of s from i to j with step k .
+s[0:40:2] # 'HloWrd  oePormigwt y'
+
+
+'''
+				Working with strings using in-built functions
+'''
+s = 'World-war:z'
 # min(s) The smallest (lowest) item of string s .  uses Ascii - space smaller than a-z,A-Z
+min(s) # '-'
 # max(s) The largest (highest) item of string s .
-# s.index(x[, i[, j]]) The numeric position of the first occurrence of x in string s . The optional i and
-# j let you limit the search to the characters from i to j .
+max(s) # 'z'
+
+
+'''
+				Working with strings using string methods and attributes
+'''
+
+# Examples of string methods and attributes. 
+'capitalize', 'casefold', 'center', 'count', 'encode', 'endswith', 'expandtabs', 'find', 'format', 
+'format_map', 'index', 'isalnum', 'isalpha', 'isdecimal', 'isdigit', 'isidentifier', 'islower', 
+'isnumeric', 'isprintable', 'isspace', 'istitle', 'isupper', 'join', 'ljust', 'lower', 'lstrip', 
+'maketrans', 'partition', 'replace', 'rfind', 'rindex', 'rjust', 'rpartition', 'rsplit', 'rstrip', 
+'split', 'splitlines', 'startswith', 'strip', 'swapcase', 'title', 'translate', 'upper', 'zfill'
+
 # s.count(x) The total number of times string x appears in larger string s .
 
 # s.capitalize() Returns a string with the first letter capitalized, the rest lowercase.
@@ -15,6 +45,8 @@
 # string. Returns –1 if none found.
 # s.index(x,[y.z]) Similar to find but returns a “substring not found” error if string x can’t be found
 # in string y .
+# s.index(x[, i[, j]]) The numeric position of the first occurrence of x in string s . The optional i and
+# j let you limit the search to the characters from i to j .
 # s.isalpha() Returns True if s is at least one character long and contains only letters (A-Z or a-z).
 # s.isdecimal() Returns True if s is at least one character long and contains only numeric
 # characters (0-9).

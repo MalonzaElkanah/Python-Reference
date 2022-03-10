@@ -1,5 +1,12 @@
 # Files and File Paths
 
+
+This section involves how to use Python to create, read, and save files on the hard drive. 
+The files can be both text or binary files. It also involves organize preexisting files on the hard drive 
+For Instance: copying, renaming, moving, or compressing them.
+
+
+
 #'abspath', 'altsep', 'basename', 'commonpath', 'commonprefix', 'curdir', 'defpath', 'devnull', 
 ['dirname', 'exists', 'expanduser', 'expandvars', 'extsep', 'genericpath', 'getatime', 'getctime', 
 'getmtime', 'getsize', 'isabs', 'isdir', 'isfile', 'islink', 'ismount', 'join', 'lexists', 'normcase', 
