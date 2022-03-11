@@ -124,6 +124,14 @@ unit_price = 49.99
 # 4. It cannot be a keyword
 # keywords - have special meaning in the language
 
+ALL_inbuilt_keywords = '''
+        False, class, None, continue, True, def, and, del, as, elif, 
+        assert, else, async, await, break, except, finally, 
+        for, from, global, pass, raise, return, if, import, in, try, 
+        is, while, lambda, with, nonlocal, yield, not, or,
+'''
+
+
 
 '''
             4 Inbuilt Function
@@ -169,6 +177,25 @@ print(f"Sales Tax Rate {sales_tax_rate}")
 print(f"Sales Tax Rate {sales_tax_rate:.2%}")
 print(f"Sales Tax Rate {sales_tax_rate:.1%}")
 print(f"Sales Tax Rate {sales_tax_rate:.9%}")
+
+# All built-in Function
+
+abs(), aiter(), all(), any(), anext(), ascii(), bin(), bool(), breakpoint(), bytearray(), bytes(), 
+
+callable(), chr(), classmethod(), compile(), complex() delattr(), dict(), dir(), divmod(), 
+
+enumerate(), eval(), exec(), filter(), float(), format(), frozenset(), getattr(), globals(), 
+
+hasattr(), hash(), help(), hex(), id(), input(), int(), isinstance(), issubclass(), iter(), 
+
+len(), list(), locals(), map(), max(), memoryview(), min(), next(), object(), oct(), open(), ord(), 
+
+pow(), print(), property(), range(), repr(), reversed(), round()
+
+set(), setattr(), slice(), sorted(), staticmethod(), str(), sum(), super(), 
+
+tuple(), type(), vars(), zip(), __import__()
+
 
 
 """
