@@ -1,14 +1,16 @@
 '''
 _________________________________________________________
 |					TABLE 	OF 	CONTENT					|
- -------------------------------------------------------
+|-------------------------------------------------------|
 |	1. Introduction	to Numpy Library					|
 |	2. Importing Numpy 									|
 |	3. Data type 										|
 |	4. Creating Arrays									|
 |	5. Indexing and Slicing								|
-|	6. 							|
-|________________________________________________________
+|	6. Reshaping and Resizing							|
+|	7. Vectorized Expressions							|
+|   8. Matrix and Vector Operations						|
+|_______________________________________________________|
 '''
 
 '''			
@@ -361,5 +363,242 @@ a[::-2]     # array([10,  8,  6,  4,  2,  0])
 
 
 # 6.2 Multidimensional Arrays
+f = lambda m, n: n + 10 * m
+A = np.fromfunction(f, (6, 6), dtype=int)
+print(A)
+			# array([[ 0,  1,  2,  3,  4,  5],
+            #    [10, 11, 12, 13, 14, 15],
+            #    [20, 21, 22, 23, 24, 25],
+            #    [30, 31, 32, 33, 34, 35],
+            #    [40, 41, 42, 43, 44, 45],
+            #    [50, 51, 52, 53, 54, 55]])
 
+
+# extract columns and rows from this two-dimensional array
+A[:, 1]  # the second column
+array([ 1, 11, 21, 31, 41, 51])
+A[1, :]  # the second row
+array([10, 11, 12, 13, 14, 15])
+
+# A slice on each of the array axes, we can extract subarrays (submatrices in this two-dimensional example):
+A[:3, :3]  # upper half diagonal block matrix
+array([[ 0,  1,  2],
+       [10, 11, 12],
+       [20, 21, 22]])
+A[3:, :3]  # lower left off-diagonal block matrix
+array([[30, 31, 32],
+	   [40, 41, 42],
+       [50, 51, 52]])
+
+# With element spacing other that 1, submatrices made up from nonconsecutive elements can be extracted:
+A[::2, ::2]  # every second element starting from 0, 0
+array([[ 0,  2,  4],
+       [20, 22, 24],
+       [40, 42, 44]])
+
+A[1::2, 1::3]  # every second and third element starting from 1, 1
+array([[11, 14],
+      [31, 34],
+      [51, 54]])
+
+# 6.3 Views
+# Subarrays that are extracted from arrays using slice operations are alternative views of the same underlying array data.
+# When elements in a view are assigned new values, the values of the original array are therefore also updated. 
+# (since both arrays refer to the same data in the memory), improves performance..For example,
+B = A[1:5, 1:5]
+print(B)
+array([[11, 12, 13, 14],
+	   [21, 22, 23, 24],
+	   [31, 32, 33, 34],
+	   [41, 42, 43, 44]])
+B[:, :] = 0
+print(A)
+array([[ 0,  1,  2,  3,  4,  5],
+       [10,  0,  0,  0,  0, 15],
+       [20,  0,  0,  0,  0, 25],
+       [30,  0,  0,  0,  0, 35],
+       [40,  0,  0,  0,  0, 45],
+       [50, 51, 52, 53, 54, 55]])
+
+# When a copy rather than a view is needed, the view can be copied explicitly by using the copy method of the ndarray instance.
+C = B[1:3, 1:3].copy()
+print(C)
+array([[0, 0],
+       [0, 0]])
+C[:, :] = 1  # this does not affect B since C is a copy of the view B[1:3, 1:3]
+print(C)
+array([[1,1],
+       [1,1]])
+print(B)
+array([[0,0,0,0],
+	   [0,0,0,0],
+	   [0,0,0,0],
+	   [0,0,0,0]])
+
+# an array can also be copied using the function np.copy or, equivalently, using the np.array function with the
+# keyword argument copy=True.	   
+
+
+# 6.4 Fancy Indexing and Boolean-Valued Indexing	   
+
+# NumPy provides another convenient method to index arrays, called fancy indexing. With fancy indexing, 
+# an array can be indexed with another NumPy array, a Python list, or a sequence of integers, 
+# whose values select elements in the indexed array.
+A = np.linspace(0, 1, 11)
+array([ 0. ,  0.1,  0.2,  0.3,  0.4,  0.5,  0.6,  0.7,  0.8,  0.9,  1. ])
+A[np.array([0, 2, 4])]
+array([ 0. ,  0.2,  0.4])
+A[[0, 2, 4]]  # The same thing can be accomplished by indexing with a Python list
+array([ 0. ,  0.2,  0.4])
+
+# Another variant of indexing NumPy arrays is to use Boolean-valued index arrays. 
+# each element (with values True or False) indicates whether or not to select the element 
+# from the list with the corresponding index.
+
+
+# This index method is handy when filtering out elements from an array. 
+# I.E, to select all the elements from the array A (as defined in the preceding section) that exceed the value 0.5,
+A > 0.5
+array([False, False, False, False, False, False, True, True, True, True, True], dtype=bool)
+A[A > 0.5]
+array([ 0.6,  0.7,  0.8,  0.9,  1. ])
+
+
+# Unlike arrays created by using slices, the arrays returned using fancy indexing and 
+# Boolean-valued indexing are not views but rather new independent arrays
+A = np.arange(10)
+indices = [2, 4, 6]
+B = A[indices]
+B[0] = -1  # this does not affect A
+A
+array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+A[indices] = -1  # this alters A
+A
+array([ 0,  1, -1,  3, -1,  5, -1,  7,  8,  9])
+
+# likewise for Boolean-valued indexing:
+A = np.arange(10)
+B = A[A > 5]
+B[0] = -1  # this does not affect A
+A
+array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+A[A > 5] = -1  # this alters A
+A
+array([ 0,  1,  2,  3,  4,  5, -1, -1, -1, -1])
+
+
+# Reshaping and Resizing
+RESHAPING_RESIZING = '''
+np.reshape,
+np.ndarray.reshape 	- Reshape an N-dimensional array. The total number of elements must remain the same.
+
+np.ndarray.flatten 	- Creates a copy of an N-dimensional array, and reinterpret it as a one-dimensional 
+						array (i.e., all dimensions are collapsed into one).
+
+np.ravel,
+np.ndarray.ravel 	- Create a view (if possible, otherwise a copy) of an N-dimensional array in which 
+						it is interpreted as a one-dimensional array.
+
+np.squeeze			- Removes axes with length 1.
+np.expand_dims,
+np.newaxis 			- Add a new axis (dimension) of length 1 to an array, where np.newaxis is used with array indexing.
+
+np.transpose, 		- Transpose the array. The transpose operation corresponds to reversing np.ndarray.transpose, 
+						(or more generally, permuting) the axes of the array.
+np.ndarray.T
+np.hstack 			- Stacks a list of arrays horizontally (along axis 1): for example, given a list of column 
+						vectors, appends the columns to form a matrix.
+np.vstack			- Stacks a list of arrays vertically (along axis 0): for example, given a list of row vectors, 
+						appends the rows to form a matrix.
+np.dstack 			- Stacks arrays depth-wise (along axis 2).
+np.concatenate		- Creates a new array by appending arrays after each other, along a given axis.
+
+np.resize 			- Resizes an array. Creates a new copy of the original array, with the requested size. 
+						If necessary, the original array will be repeated to fill up the new array.
+np.append 			- Appends an element to an array. Creates a new copy of the array.
+
+np.insert			- Inserts a new element at a given position. Creates a new copy of the array.
+
+np.delete 			- Deletes an element at a given position. Creates a new copy of the array.
+'''
+
+# Reshaping an array does not require modifying the underlying array data; it only
+# changes in how the data is interpreted, by redefining the array’s strides attribute.
+data = np.array([[1, 2], [3, 4]])
+np.reshape(data, (1, 4))
+array([[1, 2, 3, 4]])
+data.reshape(4)
+array([1, 2, 3, 4])
+
+'''The np.ravel (and its corresponding ndarray method) is a special case of reshape, which collapses 
+all dimensions of an array and returns a flattened one-dimensional array with a length that corresponds 
+to the total number of elements in the original array. The ndarray method flatten performs the same function 
+but returns a copy instead of a view.
+'''
+data = np.array([[1, 2], [3, 4]])
+data
+array([[1, 2],
+       [3, 4]])
+data.flatten()
+array([ 1,  2,  3,  4])
+data.flatten().shape
+(4,)
+
+'''In the following example, the array data has one axis, so it should normally be indexed with a tuple 
+with one element. However, if it is indexed with a tuple with more than one element, and if the extra indices 
+in the tuple have the value np.newaxis, then the corresponding new axes are added: '''
+data = np.arange(0, 5)
+column = data[:, np.newaxis]
+column
+array([[0],
+       [1],
+       [2],
+       [3],
+       [4]])
+row = data[np.newaxis, :]
+row
+array([[0, 1, 2, 3, 4]])
+
+# The shape of the arrays passed to np.hstack, np.vstack, and np.concatenate is important to achieve the 
+# desired type of array joining. For example,
+data = np.arange(5)
+data
+array([0, 1, 2, 3, 4])
+np.vstack((data, data, data))
+array([[0, 1, 2, 3, 4],
+       [0, 1, 2, 3, 4],
+       [0, 1, 2, 3, 4]])
+
+# If we instead want to stack the arrays horizontally, to obtain a matrix where the arrays are the column vectors,
+# we might first attempt something similar using np.hstack:
+data = np.arange(5)
+data
+array([0, 1, 2, 3, 4])
+np.hstack((data, data, data))
+array([0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4])
+
+
+'''This indeed stacks the arrays horizontally, but not in the way intended here. To make np.hstack treat 
+the input arrays as columns and stack them accordingly, we need to make the input arrays two-dimensional 
+arrays of shape (1, 5) rather than one-dimensional arrays of shape (5,).'''
+data = data[:, np.newaxis]
+In [131]: np.hstack((data, data, data))
+array([[0, 0, 0],
+      [1, 1, 1],
+      [2, 2, 2],
+      [3, 3, 3],
+      [4, 4, 4]])
+
+'''The behavior of the functions for horizontal and vertical stacking, as well as concatenating arrays 
+using np.concatenate, is clearest when the stacked arrays have the same number of dimensions as the final array 
+and when the input arrays are stacked along an axis for which they have length 1.
+
+
+The number of elements in a NumPy array cannot be changed once the array has been created. To insert, append, 
+and remove elements from a NumPy array, for example, using the function np.append, np.insert, and np.delete, 
+a new array must be created and the data copied to it.
+'''
+
+# Vectorized Expressions
 
