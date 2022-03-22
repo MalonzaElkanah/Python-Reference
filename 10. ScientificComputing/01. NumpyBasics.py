@@ -1,8 +1,8 @@
 '''
 _________________________________________________________
-|					TABLE 	OF 	CONTENT					|
+|		TABLE 	OF CONTENT								|
 |-------------------------------------------------------|
-|	1. Introduction	to Numpy Library					|
+|	1. Introduction to Numpy Library					|
 |	2. Importing Numpy 									|
 |	3. Data type 										|
 |	4. Creating Arrays									|
@@ -600,5 +600,381 @@ and remove elements from a NumPy array, for example, using the function np.appen
 a new array must be created and the data copied to it.
 '''
 
-# Vectorized Expressions
+# 7. Vectorized Expressions
 
+# The purpose of storing numerical data in arrays is to be able to process the data with concise vectorized 
+# expressions that represent batch operations that are applied to all elements in the arrays.
+
+
+# 7.1 Arithmetic Operations
+# The standard arithmetic operations with NumPy arrays perform elementwise operations.
+x = np.array([[1, 2], [3, 4]])
+y = np.array([[5, 6], [7, 8]])
+x + y
+array([[ 6,  8],
+       [10, 12]])
+
+y - x
+array([[4, 4],
+       [4, 4]])
+
+x * y
+array([[ 5, 12],
+      [21, 32]])
+
+y / x
+array([[ 5.,  3. ],
+      [ 2.33333333, 2.]])
+
+
+# In operations between scalars and arrays, the scalar value is applied to each element in the array, 
+# as one could expect:
+x * 2
+array([[2, 4],
+      [6, 8]])
+
+2 ** x
+array([[ 2,  4],
+       [ 8, 16]])
+
+y / 2
+array([[ 2.5,  3. ],
+       [ 3.5,  4. ]])
+
+(y / 2).dtype
+dtype('float64')
+
+# Elementwise Functions
+ELEMENTWISE_FUNCTIONS = '''
+np.cos, np.sin, np.tan 		- Trigonometric functions.
+
+np.arccos, np.arcsin, np.arctan 	- Inverse trigonometric functions.
+
+np.cosh, np.sinh, np.tanh 		- Hyperbolic trigonometric functions.
+
+np.arccosh, np.arcsinh, np.arctanh - Inverse hyperbolic trigonometric functions.
+
+np.sqrt 				- Square root.
+
+np.exp 				- Exponential.
+
+np.log, np.log2, np.log10 		- Logarithms of base e, 2, and 10, respectively.
+'''
+
+x = np.linspace(-1, 1, 11)
+x
+array([-1. , -0.8, -0.6, -0.4, -0.2,  0. ,  0.2,  0.4,  0.6,  0.8,  1.])
+y = np.sin(np.pi * x)
+np.round(y, decimals=4)
+array([-0., -0.5878, -0.9511, -0.9511, -0.5878, 0., 0.5878, 0.9511, 0.9511, 0.5878, 0.])
+
+# We've used the constant np.pi and the function np.round to round the values of y to four decimals.
+
+MATH_OPERATOR_FUNCTION = '''
+np.add, np.subtract, np.multiply, np.divide - Addition, subtraction, multiplication, and division of two NumPy arrays.
+
+np.power 	- Raises first input argument to the power of the second input argument (applied elementwise).
+
+np.remainder 			- The remainder of division.
+
+np.reciprocal 		- The reciprocal (inverse) of each element.
+
+np.real, np.imag, np.conj 	- The real part, imaginary part, and the complex conjugate of the elements in the input arrays.
+
+np.sign, np.abs 		- The sign and the absolute value.
+np.floor, np.ceil, np.rint 	- Convert to integer values.
+np.round 			- Rounds to a given number of decimals.
+'''
+
+# Occasionally it is necessary to define new functions that operate on NumPy arrays on an element-by-element basis.
+'''A good way to implement such functions is to express it in terms of already existing NumPy operators and expressions, 
+but in cases when this is not possible, the np.vectorize function can be a convenient tool. This function takes a 
+nonvectorized function and returns a vectorized function.'''
+
+def heaviside(x):
+     return 1 if x > 0 else 0
+
+heaviside(-1)  # 0
+heaviside(1.5) # 1
+
+# np.vectorize the scalar Heaviside function can be converted into a vectorized function that works with NumPy:
+heaviside = np.vectorize(heaviside)
+heaviside(x)
+array([0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1])
+
+
+# Aggregate Functions
+
+# statistics such as averages, standard deviations, and variances of the values in the input array, 
+# and functions for calculating the sum and the product of elements in an array, are all aggregate functions
+data = np.random.normal(size=(15,15))
+np.mean(data)
+-0.032423651106794522
+data.mean()
+-0.032423651106794522
+
+AGGREGATE_FUNCTIONS = '''
+np.mean 	- The average of all values in the array.
+np.std 	- Standard deviation.
+np.var 	- Variance.
+np.sum 	- Sum of all elements.
+np.prod 	- Product of all elements.
+np.cumsum 	- Cumulative sum of all elements.
+np.cumprod 	- Cumulative product of all elements.
+np.min, np.max 	- The minimum/maximum value in an array.
+np.argmin, np.argmax - The index of the minimum/maximum value in an array.
+np.all 	- Returns True if all elements in the argument array are nonzero.
+np.any 	- Returns True if any of the elements in the argument array is nonzero.
+'''
+
+# Using the axis keyword argument with these functions, and their corresponding ndarray methods, 
+# it is possible to control over which axis in the array aggregation is carried out.
+data = np.arange(1,10).reshape(3,3)
+data
+array([[1, 2, 3],
+       [4, 5, 6],
+       [7, 8, 9]])
+
+data.sum()
+45
+data.sum(axis=0)
+array([12, 15, 18])
+data.sum(axis=1)
+array([ 6, 15, 24])
+
+
+data = np.random.normal(size=(5, 10, 15))
+data.sum(axis=0).shape
+(10, 15)
+data.sum(axis=(0, 2)).shape
+(10,)
+data.sum()
+-31.983793284860798
+
+
+# Boolean Arrays and Conditional Expressions
+
+# NumPy arrays can be used with the usual comparison operators, for example, >, <, >=, <=, ==, and !=, 
+# and the comparisons are made on an element-by-element basis.
+
+a = np.array([1, 2, 3, 4])
+b = np.array([4, 3, 2, 1])
+a < b
+array([ True,  True, False, False], dtype=bool)
+
+# we need to aggregate the Boolean values of the resulting arrays in some suitable fashion, to obtain 
+# a single True or False value. A common use-case is to apply the np.all or np.any aggregation functions, 
+# depending on the situation at hand:
+
+np.all(a < b) # False
+np.any(a < b) # True
+if np.all(a < b):
+	print("All elements in a are smaller than their corresponding element in b")
+elif np.any(a < b):
+   print("Some elements in a are smaller than their corresponding element in b")
+else:
+    print("All elements in b are smaller than their corresponding element in a")
+
+# a Boolean array is converted to a numerical-­valued array with values 0 and 1 inplace of False and True, 
+# respectively.
+x = np.array([-2, -1, 0, 1, 2])
+x > 0
+array([False, False, False,  True,  True], dtype=bool)
+1 * (x > 0)
+array([0, 0, 0, 1, 1])
+x * (x > 0)
+array([0, 0, 0, 1, 2])
+
+Conditional_Logical_Expressions = '''
+np.where 	- Chooses values from two arrays depending on the value of a condition array.
+np.choose 	- Chooses values from a list of arrays depending on the values of a given index array.
+np.select 	- Chooses values from a list of arrays depending on a listof conditions.
+np.nonzero 	- Returns an array with indices of nonzero elements.
+np.logical_and 	- Performs an elementwise AND operation.
+np.logical_or, np.logical_xor 	- Elementwise OR/XOR operations.
+np.logical_not 	- Elementwise NOT operation (inverting).
+'''
+
+
+'''For example, if we need to define a function describing a pulse of a given
+height, width, and position, we can implement this function by multiplying the height
+(a scalar variable) with two Boolean-valued arrays for the spatial extension of the pulse:'''
+def pulse(x, position, height, width):
+    return height * np.logical_and(x >= position, x <= (position + width))
+
+x = np.linspace(-5, 5, 11)
+pulse(x, position=-2, height=1, width=5)
+array([0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0])
+pulse(x, position=1, height=1, width=5)
+array([0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1])
+
+
+x = np.linspace(-4, 4, 9)
+np.where(x < 0, x**2, x**3)
+array([ 16.,   9.,   4.,   1.,   0.,   1.,   8.,  27.,  64.])
+
+
+np.select([x < -1, x < 2, x >= 2], [x**2  , x**3 , x**4])
+Out[202]: array([  16.,    9.,    4.,   -1.,    0.,    1.,   16.,  81.,  256.])
+
+np.nonzero(abs(x) > 2)
+(array([0, 1, 7, 8]),)
+x[np.nonzero(abs(x) > 2)]
+array([-4., -3.,  3.,  4.])
+x[abs(x) > 2]
+array([-4., -3.,  3.,  4.])
+
+
+
+# Set Operations
+
+
+SET_FUNCTIONS = '''
+np.unique 	- Creates a new array with unique elements, where each value only appears once.
+
+np.in1d     - Tests for the existence of an array of elements in another array.
+
+np.intersect1d - Returns an array with elements that are contained in two given arrays.
+
+np.setdiff1d   - Returns an array with elements that are contained in one, but not the other, of two given arrays.
+
+np.union1d 		- Returns an array with elements that are contained in either, or both, of two given arrays.
+'''
+
+a = np.unique([1, 2, 3, 3])
+b = np.unique([2, 3, 4, 4, 5, 6, 5])
+np.in1d(a, b)
+array([False,  True,  True], dtype=bool)
+1 in a
+True
+1 in b
+False
+
+np.union1d(a, b)
+array([1, 2, 3, 4, 5, 6])
+np.intersect1d(a, b)
+array([2, 3])
+np.setdiff1d(a, b)
+array([1])
+np.setdiff1d(b, a)
+array([4, 5, 6])
+
+
+# Operations on Arrays
+
+# some operations act on arrays as a whole and produce a transformed array of the same size.
+OPERATION_FUNCTIONS = '''
+np.transpose, np.ndarray.transpose, np.ndarray.T 	- The transpose (reverse axes) of an array.
+
+np.fliplr/np.flipud 		- Reverse the elements in each row/column.
+
+np.rot90 					- Rotates the elements along the first two axes by 90 degrees.
+
+np.sort, np.ndarray.sort 	- Sort the elements of an array along a given specified axis (which default 
+								to the last axis of the array). The np.ndarray method sort performs the 
+								sorting in place, modifying the input array.
+'''
+
+data = np.arange(9).reshape(3, 3)
+data
+array([[0, 1, 2],
+       [3, 4, 5],
+       [6, 7, 8]])
+np.transpose(data)
+array([[0, 3, 6],
+       [1, 4, 7],
+       [2, 5, 8]])
+
+data = np.random.randn(1, 2, 3, 4, 5)
+data.shape
+(1, 2, 3, 4, 5)
+data.T.shape
+(5, 4, 3, 2, 1)
+
+
+# Matrix and Vector Operations
+
+# main applications of N-dimensional arrays is to represent the mathematical concepts of vectors, matrices, and tensors
+# we also frequently need to calculate vector and matrix operations such as scalar (inner) products, 
+# dot (matrix) products, and tensor (outer) products.
+MATRIX_VECTOR_OP ='''
+np.dot 		- Matrix multiplication (dot product) between two given arrays representing vectors, arrays, or tensors.
+np.inner 	- Scalar multiplication (inner product) between two arrays representing vectors.
+np.cross 	- The cross product between two arrays that represent vectors.
+np.tensordot	- Dot product along specified axes of multidimensional arrays.
+np.outer 	- Outer product (tensor product of vectors) between two arrays representing vectors.
+np.kron 	- Kronecker product (tensor product of matrices) between arrays representing matrices and higher-dimensional arrays.
+np.einsum  	- Evaluates Einstein’s summation convention for multidimensional arrays.
+'''
+A = np.arange(1, 7).reshape(2, 3)
+print(A)
+array([[1, 2, 3],
+       [4, 5, 6]])
+B = np.arange(1, 7).reshape(3, 2)
+print(B)
+array([[1, 2],
+       [3, 4],
+       [5, 6]])
+
+
+# np.dot
+np.dot(A, B)
+array([[22, 28],
+       [49, 64]])
+
+np.dot(B, A)
+array([[ 9, 12, 15],
+       [19, 26, 33],
+       [29, 40, 51]])
+
+A = np.arange(9).reshape(3, 3)
+print(A)
+array([[0, 1, 2],
+       [3, 4, 5],
+       [6, 7, 8]])
+x = np.arange(3)
+print(x)
+array([0, 1, 2])
+np.dot(A, x)
+array([5, 14, 23])
+
+# A′ = BAB**−1
+In [235]: A = np.random.rand(3,3)
+In [236]: B = np.random.rand(3,3)
+In [237]: Ap = np.dot(B, np.dot(A, np.linalg.inv(B)))
+or
+In [238]: Ap = B.dot(A.dot(np.linalg.inv(B)))
+
+
+# np.outer
+x = np.array([1, 2, 3])
+np.outer(x, x)
+array([[1, 2, 3],
+       [2, 4, 6],
+       [3, 6, 9]])
+
+# np.inner
+np.inner(x, x)
+# 14
+
+# np.kron
+np.kron(x, x)
+array([1, 2, 3, 2, 4, 6, 3, 6, 9])
+
+np.kron(x[:, np.newaxis], x[np.newaxis, :])
+array([[1, 2, 3],
+   	  [2, 4, 6],
+      [3, 6, 9]])
+
+# np.einsum
+x = np.array([1, 2, 3, 4])
+y = np.array([5, 6, 7, 8])
+np.einsum("n,n", x, y)
+70
+np.inner(x, y)
+70
+
+
+REF = '''
+	[http://web.mit.edu/dvp/Public/numpybook.pdf]
+'''
