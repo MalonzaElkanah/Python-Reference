@@ -137,7 +137,13 @@ The Intermediate Python topics you need master are:
 * Fast APIs
 ***
 
-## 4. Data Science
+## 4. Scientific Computing
+* NumPy
+* SymPy
+* MatPlotLib
+***
+
+## 5. Data Science
 * Numpy
 * Pandas
 * MatPlotLib
@@ -145,7 +151,7 @@ The Intermediate Python topics you need master are:
 *
 *
 
-## 5. Machine Learning and AI
+## 6. Machine Learning and AI
 * Tensor Flow
 * NumPy
 * 
