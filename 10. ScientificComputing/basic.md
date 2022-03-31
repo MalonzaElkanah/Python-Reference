@@ -140,3 +140,37 @@ Jupyter Lab is a new alternative development environment from the Jupyter projec
 	7. Profiler
 
 
+
+## Python libraries used in Scientific Computing
+
+### 1. Numpy
+- The NumPy library provides data structures for representing a rich variety of arrays and methods and functions for operating on such arrays. NumPy provides the numerical backend for nearly every scientific or technical library for Python.
+
+### 2. SymPy 
+- The Symbolic Python (SymPy) library aims to provide a full-featured computer algebra system (CAS). In contrast to many other CASs, SymPy is primarily a library, rather than a full environment. This makes SymPy well suited for integration in applications and computations that also use other Python libraries.
+
+### 3. Matplotlib 
+- Matplotlib is a Python library for publication-quality 2D and 3D graphics, with support for a variety of different output formats.
+
+### 4. SciPy
+- SciPy is a Python library, the collective name of the scientific computing environment for Python, and the umbrella organization for many of the core libraries for scientific computing with Python. The library, scipy, is in fact rather a collection of libraries for high-level scientific computing, which are more or less independent of each other. 
+- The SciPy library is built on top of NumPy, which provides the basic array data structures and fundamental operations on such arrays. The modules in SciPy provide domain-specific high-level computation methods, such as routines for linear algebra, optimization, interpolation, integration, and much more.
+
+### 5. cvxopt
+- The convex optimization library cvxopt provides solvers for linear and quadratic optimization problems.
+
+### 6. Pandas 
+- The pandas library is a framework for data processing and analysis in Python.
+
+### 7. Seaborn 
+- The Seaborn library is a visualization library for statistical graphics. It builds on Matplotlib and provides easy-to-use functions for common statistical graphs.
+
+### 8. statsmodels 
+- The statsmodels library provides a rich set of functionality related to statistical tests and statistical modeling, including linear regression, logistic regression, and time-series analysis.
+
+### 9. Scikit-learn 
+- The scikit-learn library contains a comprehensive collection of machine-learning-related algorithms, including regression, classification, dimensionality reduction, and clustering.
+
+### 10. PyMc 
+- The PyMC library, currently known as PyMC3, provides a framework for doing probabilistic programming – that is, solving statistical problems using simulation with Bayesian methods
+
