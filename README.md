@@ -141,7 +141,13 @@ The Intermediate Python topics you need master are:
 * NumPy
 * SymPy
 * MatPlotLib
-***
+* SciPy
+* cvxopt
+* Pandas
+* Seaborn
+* statsmodels
+* Scikit-learn
+* PyMc
 
 ## 5. Data Science
 * Numpy

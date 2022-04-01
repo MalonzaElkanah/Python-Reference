@@ -441,13 +441,236 @@ carat
 '''
 							5. Time Series
 '''
-# Time series are a common form of data in which a quantity is given, for example, at
-# regularly or irregularly spaced timestamps or for fixed or variable time spans (periods).
 
 # Using pandas time-series indexers, DatetimeIndex and PeriodIndex, we can carry out many common date, 
 # time, period, and calendar operations, such as selecting time ranges and shifting and resampling of
 # the data points in a time series.
 
-# 
+
+# To generate a sequence of dates that can be used as an index in a pandas Series/DataFrame objects, 
+# we can, use the date_range function. 
+
+'date_range function'
+# It takes the starting point as a date and time string/datetime object(Python standard library) 
+# as a first argument, and the number of elements in the range can be set using the periods keyword argument:
+
+In [33]: pd.date_range("2022-4-1", periods=30)
+Out[33]: 
+DatetimeIndex(['2022-04-01', '2022-04-02', '2022-04-03', '2022-04-04',
+               '2022-04-05', '2022-04-06', '2022-04-07', '2022-04-08',
+               '2022-04-09', '2022-04-10', '2022-04-11', '2022-04-12',
+               '2022-04-13', '2022-04-14', '2022-04-15', '2022-04-16',
+               '2022-04-17', '2022-04-18', '2022-04-19', '2022-04-20',
+               '2022-04-21', '2022-04-22', '2022-04-23', '2022-04-24',
+               '2022-04-25', '2022-04-26', '2022-04-27', '2022-04-28',
+               '2022-04-29', '2022-04-30'],
+              dtype='datetime64[ns]', freq='D')
+
+# To specify the frequency of the timestamps (which defaults to one day), we can use the freq keyword argument, 
+# we can give both starting and ending points as date and time strings as the first and second arguments, 
+# instead of using periods to specify the number of points,
+In [34]: pd.date_range("2022-4-1 00:00", "2022-4-1 12:00", freq="H")
+Out[34]: 
+DatetimeIndex(['2022-04-01 00:00:00', '2022-04-01 01:00:00',
+               '2022-04-01 02:00:00', '2022-04-01 03:00:00',
+               '2022-04-01 04:00:00', '2022-04-01 05:00:00',
+               '2022-04-01 06:00:00', '2022-04-01 07:00:00',
+               '2022-04-01 08:00:00', '2022-04-01 09:00:00',
+               '2022-04-01 10:00:00', '2022-04-01 11:00:00',
+               '2022-04-01 12:00:00'],
+              dtype='datetime64[ns]', freq='H')
+
+
+# The date_range function returns an instance of DatetimeIndex, which can be used, as an index for a 
+# Series/DataFrame object:
+In [35]: import numpy as np
+In [36]: ts1 = pd.Series(np.arange(30), index=pd.date_range("2022-4-1", periods=30))
+In [37]: ts1.head()
+Out[37]:
+2022-04-01    0
+2022-04-02    1
+2022-04-03    2
+2022-04-04    3
+2022-04-05    4
+Freq: D, dtype: int64
+
+# The elements of a DatetimeIndex object can, for example, be accessed using indexing with date and time strings.
+In [38]: ts1["2022-4-3"]                                                        
+Out[38]: 2
+
+In [39]: ts1.index[2]                                                           
+Out[39]: Timestamp('2022-04-03 00:00:00', freq='D')
+
+# Timestamp stores a timestamp with nanosecond resolution, while a datetime object only uses microsecond
+In [40]: ts1.index[2].year, ts1.index[2].month, ts1.index[2].day                
+Out[40]: (2022, 4, 3)
+
+In [41]: ts1.index[2].nanosecond                                                
+Out[41]: 0
+
+# We can convert a Timestamp object to a standard Python datetime object using the to_pydatetime method:
+In [42]: ts1.index[2].to_pydatetime()                                           
+Out[42]: datetime.datetime(2022, 4, 3, 0, 0)
+
+
+# we can use a list of datetime objects to create pandas time series:
+In [43]: import datetime
+In [44]: ts2 = pd.Series(np.random.rand(2), index=[datetime.datetime(2022, 4, 1), datetime.datetime(2022, 5, 1)])
+In [45]: ts2
+Out[45]: 
+2022-04-01    0.220463
+2022-05-01    0.104483
+dtype: float64
+
+
+# Data that is defined for sequences of time spans can be represented using Series and DataFrame objects 
+# that are indexed using the PeriodIndex class. 
+# We can construct an instance of the PeriodIndex class explicitly by passing a list of Period objects and
+# then specify it as index when creating a Series or DataFrame object:
+In [46]: periods = pd.PeriodIndex([pd.Period('2022-01'), pd.Period('2022-02'), pd.Period('2022-03')])
+In [47]: ts3 = pd.Series(np.random.rand(3), index=periods)
+In [48]: ts3
+Out[48]: 
+2022-01    0.836813
+2022-02    0.433138
+2022-03    0.599265
+Freq: M, dtype: float64
+
+In [49]: ts3.index                                                              
+Out[49]: PeriodIndex(['2022-01', '2022-02', '2022-03'], dtype='period[M]', freq='M')
+
+
+# We can also convert a Series or DataFrame object indexed by a DatetimeIndex object to a PeriodIndex using 
+# the to_period method (which takes an argument that specifies the period frequency, here 'M' for month):
+In [50]: ts2.to_period('M')                                                                           
+Out[50]: 
+2022-04    0.220463
+2022-05    0.104483
+Freq: M, dtype: float64
+
+
+'''We have one dataset for an indoor temperature sensor and one dataset for an outdoor temperature sensor,
+both with observations approximately every 10 minutes during most of 2014.
+'''
+temperature_outdoor_2014.tsv = '''
+1388530986  4.380000
+1388531586  4.250000
+1388532187  4.190000
+1388532787  4.060000
+1388533388  4.060000
+'''
+
+In [78]: df1 = pd.read_csv('temperature_outdoor_2014.tsv', delimiter="\t", names=["time", "outdoor"])
+In [79]: df2 = pd.read_csv('temperature_indoor_2014.tsv', delimiter="\t", names=["time", "indoor"])
+In [80]: df1.head()
+Out[80]:
+
+# convert the UNIX timestamps to date and time objects using to_datetime with the unit="s" argument. 
+# localize the timestamps (assigning a time zone) using tz_localize 
+# We also set the time column as index using set_index
+In [81]: df1.time = (pd.to_datetime(df1.time.values, unit="s")
+    ...:               .tz_localize('UTC').tz_convert('Europe/Stockholm'))
+In [82]: df1 = df1.set_index("time")
+
+# convert the time zone attribute to the Europe/Stockholm timezone using tz_convert. 
+In [83]: df2.time = (pd.to_datetime(df2.time.values, unit="s")
+    ...:               .tz_localize('UTC').tz_convert('Europe/Stockholm'))
+In [84]: df2 = df2.set_index("time")
+In [84]: df1.head()
+
+
+# A common operation on time series is to select and extract parts of the data. In pandas, we can;
+
+# 1, we can use Boolean indexing of a DataFrame to create a DataFrame for a subset of the data 
+In [88]: mask_jan = (df1.index >= "2014-1-1") & (df1.index < "2014-2-­1")
+In [89]: df1_jan = df1[mask_jan]
+
+# 2, we can use slice syntax directly with date and time strings:
+In [91]: df2_jan = df2["2014-1-1":"2014-1-31"]
+
+
+
+"calculate the average temperature for each month ofthe year,"
+# creating a new column month, which we assign to the month field of the Timestamp values 
+# of the DatetimeIndex indexer.
+# we first call reset_index to convert the index to a column in the data frame
+In [93]: df1_month = df1.reset_index()
+# use the apply function on the newly created time column
+In [94]: df1_month["month"] = df1_month.time.apply(lambda x: x.month)
+In [95]: df1_month.head()
+Out[95]:
+
+# Next, we can group the DataFrame by the new month field and aggregate the grouped
+# values using the mean function for computing the average within each group.
+df1_month = df1_month.groupby("month").aggregate(np.mean)
+df2_month = df2.reset_index()
+df2_month["month"] = df2_month.time.apply(lambda x: x.month)
+df2_month = df2_month.groupby("month").aggregate(np.mean)
+
+# After having repeated the same process for the second DataFrame (indoor temperatures),
+# we can combine df1_month and df2_month into a single DataFrame using the join method:
+In [100]: df_month = df1_month.join(df2_month)
+In [101]: df_month.head(3)
+Out[101]:
+
+
+# using the to_period and groupby methods and the concat function (which like join combines DataFrame 
+# into a single DataFrame):
+In [102]: df_month = pd.concat([df.to_period("M").groupby(level=0).mean() for df in [df1, df2]], axis=1)                     
+In [103]: df_month.head(3)
+
+
+"""
+                    resample method
+"""
+
+'''Resampling means that the number of data points in a time series is changed. It can be either increased
+(up-sampling) or decreased (down-sampling). For up-sampling, we need to choose a method for filling in 
+the missing values, and for down-sampling we need to choose a method for aggregating multiple sample points 
+between each new sample point. 
+
+The resample method expects as first argument a string that specifies the new period of data points in the 
+resampled time series. 
+
+H represents a period of one hour, the string D one day, the string M one month,...We can also combine
+these in simple expressions, such as 7D, which denotes a time period of seven days.
+
+The resample method returns a resampler object for which we can invoke aggregation methods 
+such as mean and sum, in order to obtain the resampled data.
+
+
+'''
+
+
+EXAMPLE = """
+we resample the outdoor temperature time series to four different sampling frequencies and plot the resulting time
+series. We also resample both the outdoor and indoor time series to daily averages that we subtract to obtain 
+the daily average temperature difference between indoors and outdoors throughout the year. 
+These types of manipulations are very handy when dealing with time series,
+"""
+
+df1_hour = df1.resample("H").mean()
+df1_hour.columns = ["outdoor (hourly avg.)"]
+df1_day = df1.resample("D").mean()
+df1_day.columns = ["outdoor (daily avg.)"]
+df1_week = df1.resample("7D").mean()
+df1_week.columns = ["outdoor (weekly avg.)"]
+df1_month = df1.resample("M").mean()
+df1_month.columns = ["outdoor (monthly avg.)"]
+df_diff = (df1.resample("D").mean().outdoor - df2.resample("D").mean().indoor)
+
+
+EXAMPLE2 = """
+we resample the data frame df1 to a sampling frequency of 5 minutes, using three different aggregation methods 
+(mean, ffill for forward-fill, and bfill for back-fill). The original sample frequency is approximately 
+10 minutes, so this resampling is indeed up-sampling. The result is three new data frames that we combine 
+into a single DataFrame object using the concat function.
+"""
+
+In [115]: pd.concat(
+     ...:     [df1.resample("5min").mean().rename(columns={"outdoor": 'None'}),
+     ...:      df1.resample("5min").ffill().rename(columns={"outdoor": 'ffill'}),
+     ...:      df1.resample("5min").bfill().rename(columns={"outdoor": 'bfill'})],
+     ...:     axis=1).head()
 
 
