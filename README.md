@@ -160,7 +160,7 @@ The Intermediate Python topics you need master are:
 ## 6. Machine Learning and AI
 * Tensor Flow
 * PyTorch
-* 
+* Scikit
 ***
 
 ## 7. Physical Computing
