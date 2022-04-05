@@ -134,8 +134,9 @@ The Intermediate Python topics you need master are:
 * Web
 * Flask Web Framework
 * Django Web FRamework
-* Fast APIs
-***
+* FastAPI
+* Streamlit 
+**
 
 ## 4. Scientific Computing
 * NumPy
